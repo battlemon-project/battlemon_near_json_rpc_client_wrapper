@@ -2,11 +2,13 @@ use near_jsonrpc_client::{methods, AsUrl, JsonRpcClient};
 use near_primitives::hash::CryptoHash;
 use near_primitives::types::{BlockId, BlockReference};
 
+pub use near_jsonrpc_client::NEAR_MAINNET_ARCHIVAL_RPC_URL;
+pub use near_jsonrpc_client::NEAR_TESTNET_ARCHIVAL_RPC_URL;
+
 type GenericError = Box<dyn std::error::Error + Sync + Send>;
 type Result<T> = std::result::Result<T, GenericError>;
 
 pub struct JsonRpcWrapper(JsonRpcClient);
-
 impl JsonRpcWrapper {
     pub fn connect<T: AsUrl>(server_address: T) -> Self {
         Self(JsonRpcClient::connect(server_address))
