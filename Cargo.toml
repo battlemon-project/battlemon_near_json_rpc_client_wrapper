@@ -1,0 +1,9 @@
+[package]
+name = "battlemon_near_json_rpc_client_wrapper"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+near-jsonrpc-client = { git = "https://github.com/near/near-jsonrpc-client-rs" }
+near-jsonrpc-primitives = "0.12.0"
+near-primitives = "0.12.0"
