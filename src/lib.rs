@@ -29,7 +29,17 @@ impl JsonRpcWrapper {
         let request = methods::block::RpcBlockRequest {
             block_reference: BlockReference::BlockId(BlockId::Hash(block_hash)),
         };
-        let response = self.0.call(request).await?;
+        let response = self.client.call(request).await?;
+        Ok(response.header.height)
+    }
+
+    pub async fn final_block_height(&self) -> Result<u64> {
+        let request = methods::block::RpcBlockRequest {
+            block_reference: BlockReference::Finality(Finality::Final),
+        };
+
+        let response = self.client.call(request).await?;
+
         Ok(response.header.height)
     }
 }
