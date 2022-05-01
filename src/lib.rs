@@ -3,7 +3,7 @@ pub use near_jsonrpc_client::NEAR_MAINNET_ARCHIVAL_RPC_URL;
 pub use near_jsonrpc_client::NEAR_TESTNET_ARCHIVAL_RPC_URL;
 use near_jsonrpc_client::{methods, AsUrl, JsonRpcClient};
 use near_primitives::hash::CryptoHash;
-use near_primitives::types::{AccountId, BlockId, BlockReference, Finality};
+use near_primitives::types::{BlockId, BlockReference, Finality};
 
 type GenericError = Box<dyn std::error::Error + Sync + Send>;
 type Result<T> = std::result::Result<T, GenericError>;
