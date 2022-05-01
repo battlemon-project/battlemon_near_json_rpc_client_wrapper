@@ -14,14 +14,10 @@ pub struct JsonRpcWrapper {
 }
 
 impl JsonRpcWrapper {
-    pub fn connect<T: AsUrl>(
-        server_address: T,
-        signer_account_id: AccountId,
-        signer_secret_key: SecretKey,
-    ) -> Self {
+    pub fn connect<T: AsUrl>(server_address: T, signer: InMemorySigner) -> Self {
         Self {
             client: JsonRpcClient::connect(server_address),
-            signer: InMemorySigner::from_secret_key(signer_account_id, signer_secret_key),
+            signer,
         }
     }
 
