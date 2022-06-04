@@ -4,9 +4,8 @@ use near_jsonrpc_client::NEAR_TESTNET_ARCHIVAL_RPC_URL;
 use near_primitives::types::AccountId;
 use std::str::FromStr;
 
-#[ignore]
 #[tokio::test]
-async fn just_works() {
+async fn call_contract_method_works() {
     let signer = near_crypto::InMemorySigner::from_secret_key(
         AccountId::from_str("battlemon.testnet").unwrap(),
         SecretKey::from_str("ed25519:4czqC7XpYFgtyYMDSxGqPhZaAFFwkwxMgfMT5k2KTjPgfCDfU9MvgxCUoZ3cvr1SKv4F4cpFM183cMtsvNtDY8zd").unwrap(),
@@ -20,6 +19,8 @@ async fn just_works() {
                 "token_id": "3",
                 "new_media": "Qmb7yyqxh3YmAYkU1rbPwrNtzwbQCia1QUfw5RAeXFyBRu"
             }),
+            1_000_000_000,
+            1,
         )
         .await
         .unwrap();
