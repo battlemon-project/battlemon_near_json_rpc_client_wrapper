@@ -5,11 +5,9 @@ use near_jsonrpc_client::{methods, AsUrl, JsonRpcClient};
 use near_jsonrpc_primitives::types::query::QueryResponseKind;
 use near_primitives::hash::CryptoHash;
 use near_primitives::transaction::Transaction;
-use near_primitives::types::{AccountId, Balance, BlockId, BlockReference, Finality, Gas};
+pub use near_primitives::types::AccountId;
+use near_primitives::types::{Balance, BlockId, BlockReference, Finality, Gas};
 use std::fmt;
-
-type GenericError = Box<dyn std::error::Error + Sync + Send>;
-type Result<T> = std::result::Result<T, GenericError>;
 
 pub struct JsonRpcWrapper {
     client: JsonRpcClient,
@@ -24,7 +22,7 @@ impl JsonRpcWrapper {
         }
     }
 
-    pub async fn block_height_from_hash(&self, block_hash: CryptoHash) -> Result<u64> {
+    pub async fn block_height_from_hash(&self, block_hash: CryptoHash) -> anyhow::Result<u64> {
         let request = methods::block::RpcBlockRequest {
             block_reference: BlockReference::BlockId(BlockId::Hash(block_hash)),
         };
@@ -32,7 +30,7 @@ impl JsonRpcWrapper {
         Ok(response.header.height)
     }
 
-    pub async fn final_block_height(&self) -> Result<u64> {
+    pub async fn final_block_height(&self) -> anyhow::Result<u64> {
         let request = methods::block::RpcBlockRequest {
             block_reference: BlockReference::Finality(Finality::Final),
         };
@@ -49,7 +47,7 @@ impl JsonRpcWrapper {
         json_args: T,
         gas: Gas,
         deposit: Balance,
-    ) -> Result<()> {
+    ) -> anyhow::Result<()> {
         let access_key_query_response = self
             .client
             .call(methods::query::RpcQueryRequest {
@@ -63,7 +61,7 @@ impl JsonRpcWrapper {
 
         let current_nonce = match access_key_query_response.kind {
             QueryResponseKind::AccessKey(access_key) => access_key.nonce,
-            _ => return Err("Failed to extract current nonce".into()),
+            _ => return Err(anyhow::anyhow!("Failed to extract current nonce")),
         };
         let args = json_args.to_string().into_bytes();
         let transaction = Transaction::new(
